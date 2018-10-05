@@ -1,0 +1,24 @@
+branches:
+  only:
+  - master
+sudo: required
+language: bash
+services:
+- docker
+
+jobs:
+  include:
+    - stage: eos-dev
+      script:
+      - docker build -f Docker/dev/Dockerfile -t eosys/eos-dev:v1.3.1 --build-arg branch=v1.3.1 --build-arg symbol=EOS .
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker push eosys/eos-dev
+    - stage: eos
+      script:
+      - docker build -f Docker/Dockerfile -t eosys/eos:v1.3.1 --build-arg branch=v1.3.1 --build-arg symbol=EOS .
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker push eosys/eos
+notifications:
+  email: false
+  slack:
+    secure: tLPRGb+y/4aJEfXSkt3KYkr5he6X8fI/gsKu9aopxWl2QNljbW7Xv4q51IPrvrQleerFRxHK09A7B4LvcyZOBQIo1tgOsfcO44E3XXPyEVBzBrCrYBNmANAibkSZM6bzIYFQBQqsHv3VRn6rQL2Ru8+Y9246/h7/HGJYgKA3Yqt/02L9puLlEMa0XFFykMVty2yXk08meaznsF+K21LwkY0T4QYwtMwL10j4RXPUJvxZ8h+f8nHWNkO/t9LaT+idAeebVLAiDaoqzNDLOSrsPBTpAsF4Seu2eqbKF6I/NXLM86MeLABDQmveW3gac56gYzpN71sbgk4lgIzJOu9b5i8wg0ILydvBNBqUtcYfhJO0X+VOHodVU3Ga6SKSaxkpeN5yn57wx5qT9xAqIny2rLF4rFJUgloe491+97Idt3B4mQHOjCIThwLMnppe6N4UgxM+fzacbGDGLS9cpmg4oFgy1+A+w4fvLSfxY55pL/C6oOxvk81BOwnZiTYcl47sDANh0QtuQyE02f2FBFQdqjHsPtcZ9Q3fY14V9dAH0P3AQJSj2Vj1DrEiSr6u5laXDL4QZhU7PQSUrtNY5Tv7eQ+nNbxhdXdrKx7aiiMKOU2g9nSmjjwzac2U9SUTCWVt8iIqdfene6SoYxl1lSxMS2sWWwzZ0IupsNgwgYp3wcA=
