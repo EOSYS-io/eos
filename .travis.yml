@@ -10,12 +10,12 @@ jobs:
   include:
     - stage: eos-dev
       script:
-      - docker build -f Docker/dev/Dockerfile -t eosys/eos-dev:v1.3.1 --build-arg branch=v1.3.1 --build-arg symbol=EOS .
+      - docker build -f Docker/dev/Dockerfile -t eosys/eos-dev:v1.2.4 --build-arg branch=v1.2.4 --build-arg symbol=EOS .
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - docker push eosys/eos-dev
     - stage: eos
       script:
-      - docker build -f Docker/Dockerfile -t eosys/eos:v1.3.1 --build-arg branch=mainnet-1.3.1 --build-arg symbol=EOS .
+      - docker build -f Docker/Dockerfile -t eosys/eos:v1.2.4 --build-arg branch=mainnet-1.2.4 --build-arg symbol=EOS .
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - docker push eosys/eos
 notifications:
